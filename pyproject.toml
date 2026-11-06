@@ -52,9 +52,9 @@ all = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/saba1aq/atlas"
-Repository = "https://github.com/saba1aq/atlas"
-Issues = "https://github.com/saba1aq/atlas/issues"
+Homepage = "https://github.com/saba1aq/telamon"
+Repository = "https://github.com/saba1aq/telamon"
+Issues = "https://github.com/saba1aq/telamon/issues"
 
 [build-system]
 requires = ["uv_build>=0.11.27,<0.12.0"]
