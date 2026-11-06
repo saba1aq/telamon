@@ -26,10 +26,10 @@ from typing import Any
 import anyio
 from pydantic import BaseModel
 
-from atlas.core.exceptions import ValidationError
-from atlas.core.model_admin import ModelAdmin
-from atlas.core.query import ListQuery, Page
-from atlas.core.schema import FieldType, ModelSchema
+from telamon.core.exceptions import ValidationError
+from telamon.core.model_admin import ModelAdmin
+from telamon.core.query import ListQuery, Page
+from telamon.core.schema import FieldType, ModelSchema
 
 from .common import (
     Ref,
@@ -42,7 +42,7 @@ from .common import (
     to_bson,
 )
 
-REFS_KEY = "_atlas_refs"
+REFS_KEY = "_telamon_refs"
 
 
 class Driver:

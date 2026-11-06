@@ -17,9 +17,9 @@ from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth, action
-from atlas.backends.sqlalchemy import SQLAlchemyBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth, action
+from telamon.backends.sqlalchemy import SQLAlchemyBackend
+from telamon.transports.starlette import mount
 
 DB_PATH = Path(__file__).with_name("example.db")
 engine = create_async_engine(f"sqlite+aiosqlite:///{DB_PATH}")

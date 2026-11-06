@@ -20,13 +20,13 @@ from fastapi import FastAPI
 from pydantic import BaseModel, Field
 from pymongo import AsyncMongoClient
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth
-from atlas.backends.mongo import MongoBackend, Ref
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth
+from telamon.backends.mongo import MongoBackend, Ref
+from telamon.transports.starlette import mount
 
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://127.0.0.1:27017")
 client: AsyncMongoClient[Any] = AsyncMongoClient(MONGO_URL)
-db = client["atlas_example"]
+db = client["telamon_example"]
 
 
 class Customer(BaseModel):

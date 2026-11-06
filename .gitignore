@@ -12,5 +12,5 @@ build/
 .env
 node_modules/
 ui/dist/
-src/atlas/static/
+src/telamon/static/
 .DS_Store

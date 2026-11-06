@@ -12,8 +12,8 @@ import pytest
 from pydantic import BaseModel, Field
 from pymongo import AsyncMongoClient, MongoClient
 
-from atlas import AdminSite
-from atlas.backends.mongo import MongoBackend, Ref
+from telamon import AdminSite
+from telamon.backends.mongo import MongoBackend, Ref
 from tests.contract import AuthorAdminBase, BookAdminBase, ContractTests
 from tests.mongo_utils import MONGO_URL, requires_mongo
 
@@ -118,7 +118,7 @@ def make_site(database: object) -> AdminSite:
 class TestPyMongoSync(ContractTests):
     @pytest.fixture
     def site(self) -> AdminSite:
-        name = f"atlas_test_{uuid.uuid4().hex[:8]}"
+        name = f"telamon_test_{uuid.uuid4().hex[:8]}"
         seed(name)
         return make_site(MongoClient(MONGO_URL)[name])
 
@@ -126,7 +126,7 @@ class TestPyMongoSync(ContractTests):
 class TestPyMongoAsync(ContractTests):
     @pytest.fixture
     async def site(self) -> AsyncIterator[AdminSite]:
-        name = f"atlas_test_{uuid.uuid4().hex[:8]}"
+        name = f"telamon_test_{uuid.uuid4().hex[:8]}"
         seed(name)
         client: AsyncMongoClient[dict] = AsyncMongoClient(MONGO_URL)
         yield make_site(client[name])
@@ -139,7 +139,7 @@ class TestMotor(ContractTests):
     async def site(self) -> AsyncIterator[AdminSite]:
         from motor.motor_asyncio import AsyncIOMotorClient
 
-        name = f"atlas_test_{uuid.uuid4().hex[:8]}"
+        name = f"telamon_test_{uuid.uuid4().hex[:8]}"
         seed(name)
         client = AsyncIOMotorClient(MONGO_URL)
         yield make_site(client[name])
@@ -155,7 +155,7 @@ async def test_objectid_pk_roundtrip() -> None:
         text: str
         ref: Annotated[str | None, Ref(Author)] = None
 
-    name = f"atlas_test_{uuid.uuid4().hex[:8]}"
+    name = f"telamon_test_{uuid.uuid4().hex[:8]}"
     seed(name)
     client: AsyncMongoClient[dict] = AsyncMongoClient(MONGO_URL)
     site = AdminSite("T", backend=MongoBackend(client[name]))

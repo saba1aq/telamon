@@ -1,6 +1,6 @@
 """Starlette / FastAPI transport.
 
-    from atlas.transports.starlette import mount
+    from telamon.transports.starlette import mount
     mount(app, site, path="/admin")
 
 The admin is an ASGI sub-application: ``/_api/...`` goes to ``AdminSite.dispatch``, everything
@@ -19,8 +19,8 @@ from starlette.responses import HTMLResponse, JSONResponse, Response
 from starlette.routing import Mount, Route
 from starlette.staticfiles import StaticFiles
 
-from atlas.core.http import AdminRequest, AdminResponse
-from atlas.core.site import AdminSite
+from telamon.core.http import AdminRequest, AdminResponse
+from telamon.core.site import AdminSite
 
 STATIC_DIR = Path(__file__).resolve().parent.parent / "static"
 API_PREFIX = "/_api"
@@ -30,7 +30,7 @@ _PLACEHOLDER = """<!doctype html><html><head><meta charset="utf-8"><title>{title
 body {{ font: 16px/1.5 system-ui; margin: 4rem auto; max-width: 40rem; color: #222 }}
 code {{ background: #eee; padding: .1em .3em }}
 </style></head><body><h1>{title}</h1>
-<p>The Atlas Admin UI bundle is not installed in this package build, but the JSON API is live.</p>
+<p>The Telamon Admin UI bundle is not installed in this package build, but the JSON API is live.</p>
 <ul>
 <li><code>GET {api}/site</code></li>
 <li><code>GET {api}/&lt;resource&gt;/schema</code></li>
@@ -95,9 +95,9 @@ def create_app(site: AdminSite, *, static_dir: Path | str | None = None) -> Star
         if index_html is None:
             return HTMLResponse(_PLACEHOLDER.format(title=site.title, api=config["apiPath"]))
         html = (
-            index_html.replace("__ATLAS_CONFIG__", json.dumps(config))
-            .replace("/__ATLAS_BASE__/", "__ATLAS_BASE__/")  # vite prefixes base with "/"
-            .replace("__ATLAS_BASE__/", f"{base}/")
+            index_html.replace("__TELAMON_CONFIG__", json.dumps(config))
+            .replace("/__TELAMON_BASE__/", "__TELAMON_BASE__/")  # vite prefixes base with "/"
+            .replace("__TELAMON_BASE__/", f"{base}/")
         )
         return HTMLResponse(html, headers={"cache-control": "no-store"})
 
@@ -109,7 +109,7 @@ def create_app(site: AdminSite, *, static_dir: Path | str | None = None) -> Star
     ]
     assets = static / "assets"
     if assets.is_dir():
-        routes.append(Mount("/assets", StaticFiles(directory=assets), name="atlas-assets"))
+        routes.append(Mount("/assets", StaticFiles(directory=assets), name="telamon-assets"))
     routes.append(Route("/{path:path}", index, methods=["GET"]))
     routes.append(Route("/", index, methods=["GET"]))
     return Starlette(routes=routes)
@@ -118,7 +118,7 @@ def create_app(site: AdminSite, *, static_dir: Path | str | None = None) -> Star
 def mount(app: Any, site: AdminSite, path: str = "/admin", **kwargs: Any) -> Starlette:
     """Mount the admin onto a Starlette or FastAPI application at ``path``."""
     admin_app = create_app(site, **kwargs)
-    app.mount(path.rstrip("/") or "/", admin_app, name="atlas")
+    app.mount(path.rstrip("/") or "/", admin_app, name="telamon")
     return admin_app
 
 

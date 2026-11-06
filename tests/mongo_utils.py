@@ -4,7 +4,7 @@ import os
 
 import pytest
 
-MONGO_URL = os.environ.get("ATLAS_TEST_MONGO_URL", "mongodb://127.0.0.1:27017")
+MONGO_URL = os.environ.get("TELAMON_TEST_MONGO_URL", "mongodb://127.0.0.1:27017")
 
 
 def mongo_available() -> bool:

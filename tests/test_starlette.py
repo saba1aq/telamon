@@ -7,8 +7,8 @@ import httpx
 import pytest
 from fastapi import FastAPI
 
-from atlas import AdminSite, SimpleAuth
-from atlas.transports.starlette import mount
+from telamon import AdminSite, SimpleAuth
+from telamon.transports.starlette import mount
 from tests.contract import AuthorAdminBase as AuthorAdmin
 from tests.test_memory import Author, Book, make_backend
 from tests.test_memory import MemoryBookAdmin as BookAdmin
@@ -20,8 +20,8 @@ async def client(tmp_path: Path) -> AsyncIterator[httpx.AsyncClient]:
     (static / "assets").mkdir(parents=True)
     (static / "assets" / "app.js").write_text("console.log('ok')")
     (static / "index.html").write_text(
-        "<html><head><script>window.__ATLAS__=__ATLAS_CONFIG__</script>"
-        '<script src="/__ATLAS_BASE__/assets/app.js"></script></head></html>'
+        "<html><head><script>window.__TELAMON__=__TELAMON_CONFIG__</script>"
+        '<script src="/__TELAMON_BASE__/assets/app.js"></script></head></html>'
     )
     site = AdminSite("My Admin", backend=make_backend(), auth=SimpleAuth("s3cret", {"root": "pw"}))
     site.register(Author, AuthorAdmin)
@@ -40,7 +40,7 @@ async def test_index_injects_config(client: httpx.AsyncClient) -> None:
     assert '"basePath": "/admin"' in r.text and '"apiPath": "/admin/_api"' in r.text
     assert 'src="/admin/assets/app.js"' in r.text
     r = await client.get("/admin/book/1")  # SPA deep link
-    assert r.status_code == 200 and "__ATLAS__" in r.text
+    assert r.status_code == 200 and "__TELAMON__" in r.text
     r = await client.get("/admin/assets/app.js")
     assert r.status_code == 200 and "console.log" in r.text
 
@@ -49,7 +49,7 @@ async def test_api_roundtrip_with_cookies(client: httpx.AsyncClient) -> None:
     r = await client.get("/admin/_api/site")
     assert r.status_code == 401
     r = await client.post("/admin/_api/auth/login", json={"username": "root", "password": "pw"})
-    assert r.status_code == 200 and "atlas_session" in r.cookies
+    assert r.status_code == 200 and "telamon_session" in r.cookies
     r = await client.get("/admin/_api/site")
     assert r.status_code == 200 and r.json()["user"]["username"] == "root"
     r = await client.get(
@@ -69,7 +69,7 @@ async def test_api_roundtrip_with_cookies(client: httpx.AsyncClient) -> None:
     assert r.headers["content-type"].startswith("text/csv")
     assert r.headers["content-disposition"].endswith('"book.csv"')
     r = await client.post("/admin/_api/auth/logout")
-    assert r.status_code == 204 and "atlas_session" not in r.cookies
+    assert r.status_code == 204 and "telamon_session" not in r.cookies
     assert (await client.get("/admin/_api/site")).status_code == 401
     assert (await client.get("/admin/_api/nope/x/y")).status_code == 404
 

@@ -3,6 +3,9 @@
 docker run -d --rm -p 27017:27017 --name mongo mongo:7
 uv run uvicorn examples.fastapi_beanie.app:app --reload
 open http://127.0.0.1:8000/admin  (login: admin / admin)
+
+Beanie 2.x takes pymongo's ``AsyncMongoClient`` (used below); Beanie 1.x expects
+``motor.motor_asyncio.AsyncIOMotorClient`` instead. The admin backend works with both.
 """
 
 from __future__ import annotations
@@ -17,9 +20,9 @@ from fastapi import FastAPI
 from pydantic import Field
 from pymongo import AsyncMongoClient
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth
-from atlas.backends.beanie import BeanieBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth
+from telamon.backends.beanie import BeanieBackend
+from telamon.transports.starlette import mount
 
 MONGO_URL = os.environ.get("MONGO_URL", "mongodb://127.0.0.1:27017")
 
@@ -80,7 +83,9 @@ class ProductAdmin(ModelAdmin):
 @asynccontextmanager
 async def lifespan(app: FastAPI):  # type: ignore[no-untyped-def]
     client: AsyncMongoClient[Any] = AsyncMongoClient(MONGO_URL)
-    await init_beanie(database=client["atlas_beanie_example"], document_models=[Category, Product])
+    await init_beanie(
+        database=client["telamon_beanie_example"], document_models=[Category, Product]
+    )
     await seed()
     yield
     await client.close()

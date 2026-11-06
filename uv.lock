@@ -111,86 +111,6 @@ wheels = [
 ]
 
 [[package]]
-name = "atlas"
-version = "0.1.0a0"
-source = { editable = "." }
-dependencies = [
-    { name = "anyio" },
-]
-
-[package.optional-dependencies]
-beanie = [
-    { name = "beanie" },
-]
-fastapi = [
-    { name = "fastapi" },
-]
-mongo = [
-    { name = "pymongo" },
-]
-sqlalchemy = [
-    { name = "sqlalchemy" },
-]
-starlette = [
-    { name = "python-multipart" },
-    { name = "starlette" },
-]
-tortoise = [
-    { name = "tortoise-orm" },
-]
-
-[package.dev-dependencies]
-dev = [
-    { name = "aiosqlite" },
-    { name = "beanie" },
-    { name = "fastapi" },
-    { name = "httpx" },
-    { name = "mongomock" },
-    { name = "motor" },
-    { name = "mypy" },
-    { name = "pymongo" },
-    { name = "pytest" },
-    { name = "pytest-asyncio" },
-    { name = "python-multipart" },
-    { name = "ruff" },
-    { name = "sqlalchemy", extra = ["asyncio"] },
-    { name = "tortoise-orm" },
-    { name = "uvicorn" },
-]
-
-[package.metadata]
-requires-dist = [
-    { name = "anyio", specifier = ">=4.0" },
-    { name = "beanie", marker = "extra == 'beanie'", specifier = ">=1.26" },
-    { name = "fastapi", marker = "extra == 'fastapi'", specifier = ">=0.110" },
-    { name = "pymongo", marker = "extra == 'mongo'", specifier = ">=4.9" },
-    { name = "python-multipart", marker = "extra == 'starlette'", specifier = ">=0.0.9" },
-    { name = "sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=2.0" },
-    { name = "starlette", marker = "extra == 'starlette'", specifier = ">=0.37" },
-    { name = "tortoise-orm", marker = "extra == 'tortoise'", specifier = ">=0.21" },
-]
-provides-extras = ["sqlalchemy", "tortoise", "starlette", "fastapi", "mongo", "beanie"]
-
-[package.metadata.requires-dev]
-dev = [
-    { name = "aiosqlite", specifier = ">=0.22.1" },
-    { name = "beanie", specifier = ">=2.2.0" },
-    { name = "fastapi", specifier = ">=0.156.8" },
-    { name = "httpx", specifier = ">=0.28.1" },
-    { name = "mongomock", specifier = ">=4.3.0" },
-    { name = "motor", specifier = ">=3.7.1" },
-    { name = "mypy", specifier = ">=2.4.0" },
-    { name = "pymongo", specifier = ">=4.19.0" },
-    { name = "pytest", specifier = ">=9.1.1" },
-    { name = "pytest-asyncio", specifier = ">=1.4.0" },
-    { name = "python-multipart", specifier = ">=0.0.32" },
-    { name = "ruff", specifier = ">=0.17.1" },
-    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0" },
-    { name = "tortoise-orm", specifier = ">=1.1.9" },
-    { name = "uvicorn", specifier = ">=0.54.0" },
-]
-
-[[package]]
 name = "beanie"
 version = "2.2.0"
 source = { registry = "https://pypi.org/simple" }
@@ -1088,6 +1008,94 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/ad/eb/4e197bf26b023abafc5e9043ec8710d7de0fcb032d0969045236d72aa0b1/starlette-1.9.0.tar.gz", hash = "sha256:3d931de246ed870e35ce605974440816ef895e592f255d1396cfdf191d4c4318", size = 2732466, upload-time = "2026-10-18T15:50:33.189Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/f3/93/181df62699d9b5aca1d87e5cfda131dac87e3cdaebf668662f7206ca3470/starlette-1.9.0-py3-none-any.whl", hash = "sha256:fd3f159936e882d06c1108f84688f7cda2cf85fc6a592a50edbd175e882c2ddc", size = 80335, upload-time = "2026-10-18T15:50:31.526Z" },
+]
+
+[[package]]
+name = "telamon"
+version = "0.1.0a1"
+source = { editable = "." }
+dependencies = [
+    { name = "anyio" },
+]
+
+[package.optional-dependencies]
+all = [
+    { name = "beanie" },
+    { name = "fastapi" },
+    { name = "pymongo" },
+    { name = "sqlalchemy" },
+    { name = "tortoise-orm" },
+]
+beanie = [
+    { name = "beanie" },
+]
+fastapi = [
+    { name = "fastapi" },
+]
+mongo = [
+    { name = "pymongo" },
+]
+sqlalchemy = [
+    { name = "sqlalchemy" },
+]
+starlette = [
+    { name = "python-multipart" },
+    { name = "starlette" },
+]
+tortoise = [
+    { name = "tortoise-orm" },
+]
+
+[package.dev-dependencies]
+dev = [
+    { name = "aiosqlite" },
+    { name = "beanie" },
+    { name = "fastapi" },
+    { name = "httpx" },
+    { name = "mongomock" },
+    { name = "motor" },
+    { name = "mypy" },
+    { name = "pymongo" },
+    { name = "pytest" },
+    { name = "pytest-asyncio" },
+    { name = "python-multipart" },
+    { name = "ruff" },
+    { name = "sqlalchemy", extra = ["asyncio"] },
+    { name = "tortoise-orm" },
+    { name = "uvicorn" },
+]
+
+[package.metadata]
+requires-dist = [
+    { name = "anyio", specifier = ">=4.0" },
+    { name = "beanie", marker = "extra == 'beanie'", specifier = ">=1.26" },
+    { name = "fastapi", marker = "extra == 'fastapi'", specifier = ">=0.110" },
+    { name = "pymongo", marker = "extra == 'mongo'", specifier = ">=4.9" },
+    { name = "python-multipart", marker = "extra == 'starlette'", specifier = ">=0.0.9" },
+    { name = "sqlalchemy", marker = "extra == 'sqlalchemy'", specifier = ">=2.0" },
+    { name = "starlette", marker = "extra == 'starlette'", specifier = ">=0.37" },
+    { name = "telamon", extras = ["beanie", "fastapi", "mongo", "sqlalchemy", "tortoise"], marker = "extra == 'all'", editable = "." },
+    { name = "tortoise-orm", marker = "extra == 'tortoise'", specifier = ">=0.21" },
+]
+provides-extras = ["sqlalchemy", "tortoise", "starlette", "fastapi", "mongo", "beanie", "all"]
+
+[package.metadata.requires-dev]
+dev = [
+    { name = "aiosqlite", specifier = ">=0.22.1" },
+    { name = "beanie", specifier = ">=2.2.0" },
+    { name = "fastapi", specifier = ">=0.156.8" },
+    { name = "httpx", specifier = ">=0.28.1" },
+    { name = "mongomock", specifier = ">=4.3.0" },
+    { name = "motor", specifier = ">=3.7.1" },
+    { name = "mypy", specifier = ">=2.4.0" },
+    { name = "pymongo", specifier = ">=4.19.0" },
+    { name = "pytest", specifier = ">=9.1.1" },
+    { name = "pytest-asyncio", specifier = ">=1.4.0" },
+    { name = "python-multipart", specifier = ">=0.0.32" },
+    { name = "ruff", specifier = ">=0.17.1" },
+    { name = "sqlalchemy", extras = ["asyncio"], specifier = ">=2.0" },
+    { name = "tortoise-orm", specifier = ">=1.1.9" },
+    { name = "uvicorn", specifier = ">=0.54.0" },
 ]
 
 [[package]]

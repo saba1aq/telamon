@@ -4,9 +4,9 @@ import datetime as dt
 
 import pytest
 
-from atlas import AdminSite
-from atlas.backends.memory import MemoryBackend
-from atlas.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
+from telamon import AdminSite
+from telamon.backends.memory import MemoryBackend
+from telamon.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
 from tests.contract import AuthorAdminBase, BookAdminBase, ContractTests
 
 

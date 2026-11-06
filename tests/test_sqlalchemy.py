@@ -10,8 +10,8 @@ from sqlalchemy.ext.asyncio import create_async_engine
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column, relationship
 from sqlalchemy.pool import StaticPool
 
-from atlas import AdminSite
-from atlas.backends.sqlalchemy import SQLAlchemyBackend
+from telamon import AdminSite
+from telamon.backends.sqlalchemy import SQLAlchemyBackend
 from tests.contract import AuthorAdminBase, BookAdminBase, ContractTests
 
 

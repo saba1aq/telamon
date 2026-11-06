@@ -1,12 +1,28 @@
 [project]
-name = "atlas"
-version = "0.1.0a0"
-description = "Framework-agnostic admin panel for FastAPI/Starlette over SQLAlchemy and Tortoise ORM"
+name = "telamon"
+version = "0.1.0a1"
+description = "Framework-agnostic admin panel for Python: SQLAlchemy, Tortoise ORM, MongoDB and Beanie, with a built-in React UI"
 readme = "README.md"
 authors = [
     { name = "z.nurym", email = "z.nurym@mycar.kz" }
 ]
 requires-python = ">=3.11"
+license = "MIT"
+license-files = ["LICENSE"]
+keywords = ["admin", "admin-panel", "fastapi", "starlette", "sqlalchemy", "tortoise-orm", "mongodb", "beanie"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Framework :: FastAPI",
+    "Topic :: Internet :: WWW/HTTP :: Dynamic Content",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Typing :: Typed",
+]
 dependencies = [
     "anyio>=4.0",
 ]
@@ -31,6 +47,14 @@ mongo = [
 beanie = [
     "beanie>=1.26",
 ]
+all = [
+    "telamon[beanie,fastapi,mongo,sqlalchemy,tortoise]",
+]
+
+[project.urls]
+Homepage = "https://github.com/saba1aq/atlas"
+Repository = "https://github.com/saba1aq/atlas"
+Issues = "https://github.com/saba1aq/atlas/issues"
 
 [build-system]
 requires = ["uv_build>=0.11.27,<0.12.0"]
@@ -70,6 +94,9 @@ select = ["E", "F", "I", "UP", "B", "SIM"]
 python_version = "3.11"
 strict = true
 ignore_missing_imports = true
+
+[tool.uv.sources]
+telamon = { workspace = true }
 
 [tool.ruff.lint.per-file-ignores]
 "tests/*" = ["E501"]

@@ -14,11 +14,11 @@ from tortoise.expressions import Q
 from tortoise.models import Model
 from tortoise.queryset import QuerySet
 
-from atlas.core.exceptions import ValidationError
-from atlas.core.filters import Condition, FilterGroup, Op
-from atlas.core.model_admin import ModelAdmin
-from atlas.core.query import ListQuery, Page
-from atlas.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
+from telamon.core.exceptions import ValidationError
+from telamon.core.filters import Condition, FilterGroup, Op
+from telamon.core.model_admin import ModelAdmin
+from telamon.core.query import ListQuery, Page
+from telamon.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
 
 _SCALAR_TYPES: list[tuple[type, FieldType]] = [
     (tf.BooleanField, FieldType.BOOLEAN),

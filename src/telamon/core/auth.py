@@ -13,7 +13,7 @@ from typing import Any, Protocol, cast, runtime_checkable
 
 from .http import AdminRequest, AdminResponse, Cookie
 
-SESSION_COOKIE = "atlas_session"
+SESSION_COOKIE = "telamon_session"
 
 
 @dataclass(slots=True)
@@ -143,7 +143,7 @@ class SessionAuth:
 
     def on_login(self, user: User, response: AdminResponse) -> AdminResponse:
         token = self.signer.sign(user.username)
-        response.headers["x-atlas-token"] = token
+        response.headers["x-telamon-token"] = token
         return response.set_cookie(
             Cookie(self.cookie_name, token, max_age=self.signer.max_age, secure=self.secure_cookie)
         )

@@ -1,4 +1,4 @@
-# Atlas Admin — план проекта
+# Telamon Admin — план проекта
 
 Фреймворко‑независимая админ‑панель для Python: один пакет, который подключается
 к FastAPI, Flask и Django и работает поверх SQLAlchemy, Tortoise ORM и Django ORM.
@@ -43,7 +43,7 @@ JSON‑протокол + SPA**. Тогда интеграция с фреймв
 ## 2. Архитектура
 
 ```
-┌──────────────────────────── atlas (python) ────────────────────────────┐
+┌──────────────────────────── telamon (python) ────────────────────────────┐
 │                                                                              │
 │  transports/            core/                         backends/              │
 │  ├─ starlette (FastAPI) │  ├─ AdminSite (реестр)      ├─ sqlalchemy          │
@@ -55,7 +55,7 @@ JSON‑протокол + SPA**. Тогда интеграция с фреймв
 │                         │  └─ Auth / Permissions                             │
 └──────────────────────────────────────────────────────────────────────────────┘
                      ▲ JSON over HTTP
-┌─────────────────── atlas-ui (React + TS, статика в wheel) ─────────────┐
+┌─────────────────── telamon-ui (React + TS, статика в wheel) ─────────────┐
 │  список / фильтры / детальная / формы / связи / bulk actions / dashboard     │
 └──────────────────────────────────────────────────────────────────────────────┘
 ```
@@ -136,11 +136,11 @@ class ListQuery:
 
 ```python
 # FastAPI + SQLAlchemy
-from atlas import AdminSite, ModelAdmin
-from atlas.backends.sqlalchemy import SQLAlchemyBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin
+from telamon.backends.sqlalchemy import SQLAlchemyBackend
+from telamon.transports.starlette import mount
 
-site = AdminSite(title="Atlas", backend=SQLAlchemyBackend(session_factory))
+site = AdminSite(title="Telamon", backend=SQLAlchemyBackend(session_factory))
 
 @site.register(User)
 class UserAdmin(ModelAdmin):
@@ -154,8 +154,8 @@ class UserAdmin(ModelAdmin):
 
 mount(app, site, path="/admin")
 
-# Flask:   atlas.transports.flask.register(app, site, url_prefix="/admin")
-# Django:  path("admin/", include(atlas.transports.django.urls(site)))
+# Flask:   telamon.transports.flask.register(app, site, url_prefix="/admin")
+# Django:  path("admin/", include(telamon.transports.django.urls(site)))
 #          backend=DjangoBackend() — модели берутся из apps.get_models() или явно
 # Tortoise: backend=TortoiseBackend()
 ```
@@ -166,7 +166,7 @@ mount(app, site, path="/admin")
 
 - **React 19 + TypeScript + Vite**, UI на shadcn/ui + Tailwind, таблицы на TanStack Table,
   данные через TanStack Query, формы на react‑hook‑form + zod (схема генерируется из `ModelSchema`).
-- Собранный бандл кладётся в wheel (`atlas/static/`), пользователю Node не нужен.
+- Собранный бандл кладётся в wheel (`telamon/static/`), пользователю Node не нужен.
 - Виджеты по типу поля: text, textarea, number, boolean, date/datetime, enum/select,
   FK‑autocomplete, M2M‑multiselect, JSON‑editor, file/image, rich text (позже).
 - Тёмная тема, command palette (⌘K), сохранённые фильтры, адаптив под мобильный.
@@ -191,21 +191,21 @@ mount(app, site, path="/admin")
 ## 3. Структура репозитория
 
 ```
-atlas/
+telamon/
 ├─ packages/
-│  ├─ atlas/            # python, uv, src-layout
-│  │  └─ src/atlas/
+│  ├─ telamon/            # python, uv, src-layout
+│  │  └─ src/telamon/
 │  │     ├─ core/             # site, model_admin, schema, fields, filters, protocol, actions, export, audit, auth
 │  │     ├─ backends/         # sqlalchemy/, tortoise/, django/   (каждый — optional extra)
 │  │     ├─ transports/       # starlette.py, flask.py, django/
 │  │     └─ static/           # собранный SPA (генерируется CI)
-│  └─ atlas-ui/         # React, pnpm, Vite
+│  └─ telamon-ui/         # React, pnpm, Vite
 ├─ examples/                  # 9 комбинаций фреймворк × ORM, каждый — запускаемое приложение
 ├─ docs/                      # mkdocs-material
 └─ tests/                     # unit (core), contract (протокол), matrix (backends × transports × БД)
 ```
 
-pip extras: `atlas[sqlalchemy]`, `[tortoise]`, `[django]`, `[fastapi]`, `[flask]`.
+pip extras: `telamon[sqlalchemy]`, `[tortoise]`, `[django]`, `[fastapi]`, `[flask]`.
 Тулинг: uv, ruff, mypy strict для core, pytest + hypothesis для фильтров, Playwright для e2e.
 
 ---
@@ -260,7 +260,7 @@ pip extras: `atlas[sqlalchemy]`, `[tortoise]`, `[django]`, `[fastapi]`, `[flask]
 | Разные модели фильтрации в трёх ORM | `FilterGroup` ограничен фиксированным набором операторов; бэкенд объявляет `supported_ops` per‑type, UI скрывает лишнее |
 | Транзакции в bulk actions у разных ORM | `Repository.transaction()` как асинхронный контекст, реализация у каждого бэкенда своя |
 | Объём SPA и поддержка фронта | Единый протокол позволяет заменить фронт; минимальный набор виджетов в 0.1 |
-| Конфликт с существующим Django admin на `/admin/` | Документируем монтирование на `/atlas/`; возможность регистрировать модели из `admin.site._registry` |
+| Конфликт с существующим Django admin на `/admin/` | Документируем монтирование на `/telamon/`; возможность регистрировать модели из `admin.site._registry` |
 | Производительность списков с большими связями (известная боль sqladmin #704) | Для списков не грузим relationship целиком, только `str()` + pk через отдельный lightweight select |
 
 ---

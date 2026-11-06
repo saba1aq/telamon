@@ -54,7 +54,7 @@ def action(
     def decorator(fn: ActionHandler) -> ActionHandler:
         if not inspect.iscoroutinefunction(fn):
             raise TypeError(f"action {fn.__name__!r} must be `async def`")
-        fn.__atlas_action__ = {  # type: ignore[attr-defined]
+        fn.__telamon_action__ = {  # type: ignore[attr-defined]
             "label": label or fn.__name__.replace("_", " ").capitalize(),
             "confirm": confirm,
             "icon": icon,
@@ -161,7 +161,7 @@ class ModelAdmin:
         if self._actions is None:
             found: dict[str, Action] = {}
             for name, member in inspect.getmembers(type(self)):
-                meta = getattr(member, "__atlas_action__", None)
+                meta = getattr(member, "__telamon_action__", None)
                 if meta:
                     found[name] = Action(name=name, handler=getattr(self, name), **meta)
             self._actions = found

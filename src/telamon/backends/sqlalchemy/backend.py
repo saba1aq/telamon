@@ -36,11 +36,11 @@ from sqlalchemy.orm import Mapper, Session, selectinload, sessionmaker
 from sqlalchemy.orm.interfaces import MANYTOMANY, MANYTOONE, ONETOMANY
 from sqlalchemy.sql.elements import ColumnElement
 
-from atlas.core.exceptions import ValidationError
-from atlas.core.filters import Condition, FilterGroup, Op
-from atlas.core.model_admin import ModelAdmin
-from atlas.core.query import ListQuery, Page
-from atlas.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
+from telamon.core.exceptions import ValidationError
+from telamon.core.filters import Condition, FilterGroup, Op
+from telamon.core.model_admin import ModelAdmin
+from telamon.core.query import ListQuery, Page
+from telamon.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
 
 T = TypeVar("T")
 SessionFactory = Callable[[], Session] | Callable[[], AsyncSession]

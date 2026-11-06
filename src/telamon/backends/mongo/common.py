@@ -18,10 +18,10 @@ from bson.decimal128 import Decimal128
 from pydantic import BaseModel
 from pydantic.fields import FieldInfo
 
-from atlas.core.exceptions import ValidationError
-from atlas.core.filters import Condition, FilterGroup, Op
-from atlas.core.query import ListQuery
-from atlas.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
+from telamon.core.exceptions import ValidationError
+from telamon.core.filters import Condition, FilterGroup, Op
+from telamon.core.query import ListQuery
+from telamon.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
 
 
 @dataclass(frozen=True, slots=True)

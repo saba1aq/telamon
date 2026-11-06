@@ -7,9 +7,9 @@ from typing import Any
 
 import pytest
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth, ValidationError, action
-from atlas.backends.memory import MemoryBackend
-from atlas.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
+from telamon import AdminSite, ModelAdmin, SimpleAuth, ValidationError, action
+from telamon.backends.memory import MemoryBackend
+from telamon.core.schema import Choice, FieldSchema, FieldType, ModelSchema, Relation
 from tests.conftest import Client, body
 
 
@@ -231,17 +231,17 @@ async def test_auth_flow() -> None:
     assert (await c.get("/site")).status == 401
     assert (await c.post("/auth/login", {"username": "admin", "password": "bad"})).status == 401
     r = await c.post("/auth/login", {"username": "admin", "password": "pw"})
-    assert r.status == 200 and "atlas_session" in c.cookies
+    assert r.status == 200 and "telamon_session" in c.cookies
     assert body(await c.get("/site"))["user"]["username"] == "admin"
     assert body(await c.get("/auth/me"))["user"]["username"] == "admin"
-    token = r.headers["x-atlas-token"]
+    token = r.headers["x-telamon-token"]
     bearer = Client(site)
     bearer.headers["authorization"] = f"Bearer {token}"
     assert (await bearer.get("/author")).status == 200
     assert (await c.post("/auth/logout")).status == 204
-    assert "atlas_session" not in c.cookies
+    assert "telamon_session" not in c.cookies
     assert (await c.get("/site")).status == 401
-    c.cookies["atlas_session"] = "garbage.sig"
+    c.cookies["telamon_session"] = "garbage.sig"
     assert (await c.get("/site")).status == 401
 
 

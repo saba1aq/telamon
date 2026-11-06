@@ -5,7 +5,7 @@ from typing import Any
 
 import pytest
 
-from atlas.core.http import AdminRequest, AdminResponse
+from telamon.core.http import AdminRequest, AdminResponse
 
 
 class Client:

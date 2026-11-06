@@ -79,7 +79,7 @@ class Resource:
 class AdminSite:
     def __init__(
         self,
-        title: str = "Atlas Admin",
+        title: str = "Telamon Admin",
         *,
         backend: Backend | None = None,
         backends: Sequence[Backend] = (),

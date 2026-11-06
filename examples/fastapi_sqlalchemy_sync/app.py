@@ -14,9 +14,9 @@ import sqlalchemy as sa
 from fastapi import FastAPI
 from sqlalchemy.orm import DeclarativeBase, Mapped, Session, mapped_column, relationship
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth
-from atlas.backends.sqlalchemy import SQLAlchemyBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth
+from telamon.backends.sqlalchemy import SQLAlchemyBackend
+from telamon.transports.starlette import mount
 
 engine = sa.create_engine(f"sqlite:///{Path(__file__).with_name('example.db')}")
 

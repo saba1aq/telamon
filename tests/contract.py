@@ -18,7 +18,7 @@ from typing import Any
 
 import pytest
 
-from atlas import ModelAdmin, ValidationError, action
+from telamon import ModelAdmin, ValidationError, action
 from tests.conftest import Client, body
 
 

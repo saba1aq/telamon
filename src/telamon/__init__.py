@@ -1,4 +1,7 @@
-"""Atlas Admin: framework-agnostic admin panel for SQLAlchemy and Tortoise ORM."""
+"""Telamon: framework-agnostic admin panel for SQLAlchemy, Tortoise ORM, MongoDB and Beanie."""
+
+from importlib.metadata import PackageNotFoundError
+from importlib.metadata import version as _pkg_version
 
 from .core import (
     Action,
@@ -24,7 +27,10 @@ from .core import (
     hash_password,
 )
 
-__version__ = "0.1.0a0"
+try:
+    __version__ = _pkg_version("telamon")
+except PackageNotFoundError:  # running from a source checkout without installation
+    __version__ = "0.0.0"
 
 __all__ = [
     "Action",

@@ -1,4 +1,4 @@
-# Atlas Admin
+# Telamon Admin
 
 Framework‑agnostic admin panel for Python: a headless core with a JSON API, pluggable data
 backends (SQLAlchemy sync/async, Tortoise ORM, MongoDB via PyMongo/Motor, Beanie ODM) and thin
@@ -10,16 +10,16 @@ Node required at install time.
 ## Quickstart (FastAPI + SQLAlchemy)
 
 ```bash
-uv add "atlas[fastapi,sqlalchemy]"
+uv add "telamon[fastapi,sqlalchemy]"
 ```
 
 ```python
 from fastapi import FastAPI
 from sqlalchemy.ext.asyncio import create_async_engine
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth, action
-from atlas.backends.sqlalchemy import SQLAlchemyBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth, action
+from telamon.backends.sqlalchemy import SQLAlchemyBackend
+from telamon.transports.starlette import mount
 
 engine = create_async_engine("sqlite+aiosqlite:///app.db")
 site = AdminSite("My Admin", backend=SQLAlchemyBackend(engine),
@@ -47,16 +47,16 @@ mount(app, site, path="/admin")
 
 | Backend | Install | Usage |
 |---|---|---|
-| SQLAlchemy 2.x, sync or async | `atlas[sqlalchemy]` | `SQLAlchemyBackend(engine_or_sessionmaker)` |
-| Tortoise ORM | `atlas[tortoise]` | `TortoiseBackend()`; run `Tortoise.init()` in your lifespan |
-| MongoDB (PyMongo sync, PyMongo async, Motor) | `atlas[mongo]` | `MongoBackend(client["db"])`, models are Pydantic classes |
-| Beanie ODM | `atlas[beanie]` | `BeanieBackend()`; run `init_beanie()` in your lifespan |
+| SQLAlchemy 2.x, sync or async | `telamon[sqlalchemy]` | `SQLAlchemyBackend(engine_or_sessionmaker)` |
+| Tortoise ORM | `telamon[tortoise]` | `TortoiseBackend()`; run `Tortoise.init()` in your lifespan |
+| MongoDB (PyMongo sync, PyMongo async, Motor) | `telamon[mongo]` | `MongoBackend(client["db"])`, models are Pydantic classes |
+| Beanie ODM 1.26+ or 2.x | `telamon[beanie]` | `BeanieBackend()`; run `init_beanie()` in your lifespan (Motor client on 1.x, `AsyncMongoClient` on 2.x) |
 
 MongoDB models are plain Pydantic classes; references are declared with `Ref`:
 
 ```python
 from typing import Annotated
-from atlas.backends.mongo import MongoBackend, Ref
+from telamon.backends.mongo import MongoBackend, Ref
 
 class Order(BaseModel):
     id: str                                              # maps to _id (ObjectId hex, int or str)
@@ -88,7 +88,7 @@ transports/   Starlette ──┐
               Django  (planned)  ──┘        ▲
                                             │ Repository / Backend protocols
 backends/     sqlalchemy, tortoise, mongo, beanie, memory ─┘
-ui/           React SPA, built into src/atlas/static
+ui/           React SPA, built into src/telamon/static
 ```
 
 * **core** never imports a web framework or an ORM. It exposes `AdminSite.dispatch(AdminRequest)`.
@@ -120,7 +120,7 @@ uv sync --all-extras          # python deps
 uv run pytest                 # core + backend contract tests + transport tests
 docker run -d --rm -p 27017:27017 mongo:7   # Mongo/Beanie tests skip when no server is reachable
 uv run ruff check src tests
-pnpm --dir ui install && pnpm --dir ui build   # rebuilds src/atlas/static
+pnpm --dir ui install && pnpm --dir ui build   # rebuilds src/telamon/static
 pnpm --dir ui dev             # UI dev server, proxies /admin/_api to :8000
 ```
 

@@ -1,4 +1,4 @@
-export interface AtlasConfig {
+export interface TelamonConfig {
   basePath: string
   apiPath: string
   title: string
@@ -6,11 +6,11 @@ export interface AtlasConfig {
 
 declare global {
   interface Window {
-    __ATLAS__?: AtlasConfig
+    __TELAMON__?: TelamonConfig
   }
 }
 
-const fallback: AtlasConfig = { basePath: '/admin', apiPath: '/admin/_api', title: 'Atlas Admin' }
-const raw = window.__ATLAS__
-export const config: AtlasConfig =
+const fallback: TelamonConfig = { basePath: '/admin', apiPath: '/admin/_api', title: 'Telamon Admin' }
+const raw = window.__TELAMON__
+export const config: TelamonConfig =
   raw && typeof raw === 'object' && 'apiPath' in raw ? raw : fallback

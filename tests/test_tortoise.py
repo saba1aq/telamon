@@ -8,8 +8,8 @@ import pytest
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
-from atlas import AdminSite
-from atlas.backends.tortoise import TortoiseBackend
+from telamon import AdminSite
+from telamon.backends.tortoise import TortoiseBackend
 from tests.contract import AuthorAdminBase, BookAdminBase, ContractTests
 
 

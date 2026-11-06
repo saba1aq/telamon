@@ -5,17 +5,23 @@ import enum
 import uuid
 from collections.abc import AsyncIterator
 
+import beanie
 import pytest
 from beanie import BackLink, Document, Link, init_beanie
 from pydantic import Field
-from pymongo import AsyncMongoClient
 
-from atlas import AdminSite
-from atlas.backends.beanie import BeanieBackend
+from telamon import AdminSite
+from telamon.backends.beanie import BeanieBackend
 from tests.contract import AuthorAdminBase, BookAdminBase, ContractTests
 from tests.mongo_utils import MONGO_URL, requires_mongo
 
 pytestmark = requires_mongo
+
+BEANIE_MAJOR = int(beanie.__version__.split(".")[0])
+if BEANIE_MAJOR >= 2:
+    from pymongo import AsyncMongoClient as MongoClientCls
+else:  # Beanie 1.x only accepts a Motor database
+    from motor.motor_asyncio import AsyncIOMotorClient as MongoClientCls
 
 
 class Author(Document):
@@ -75,8 +81,8 @@ class BeanieBookAdmin(BookAdminBase):
 class TestBeanieContract(ContractTests):
     @pytest.fixture
     async def site(self) -> AsyncIterator[AdminSite]:
-        name = f"atlas_test_{uuid.uuid4().hex[:8]}"
-        client: AsyncMongoClient[dict] = AsyncMongoClient(MONGO_URL)
+        name = f"telamon_test_{uuid.uuid4().hex[:8]}"
+        client = MongoClientCls(MONGO_URL)
         await init_beanie(database=client[name], document_models=[Author, Book])
         await seed()
         s = AdminSite("Test", backend=BeanieBackend())
@@ -84,7 +90,10 @@ class TestBeanieContract(ContractTests):
         s.register(Book, BeanieBookAdmin)
         yield s
         await client.drop_database(name)
-        await client.close()
+        if BEANIE_MAJOR >= 2:
+            await client.close()
+        else:
+            client.close()
 
     async def test_links_are_dbrefs_beanie_can_read(self, site: AdminSite) -> None:
         """Documents written by the admin must load through Beanie with links intact."""

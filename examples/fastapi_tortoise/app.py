@@ -14,9 +14,9 @@ from fastapi import FastAPI
 from tortoise import Tortoise, fields
 from tortoise.models import Model
 
-from atlas import AdminSite, ModelAdmin, SimpleAuth
-from atlas.backends.tortoise import TortoiseBackend
-from atlas.transports.starlette import mount
+from telamon import AdminSite, ModelAdmin, SimpleAuth
+from telamon.backends.tortoise import TortoiseBackend
+from telamon.transports.starlette import mount
 
 DB_PATH = Path(__file__).with_name("example.db")
 

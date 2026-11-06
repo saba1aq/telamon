@@ -14,8 +14,8 @@ from beanie import Document
 from beanie.odm.fields import BackLink, Link
 from bson import DBRef
 
-from atlas.core.model_admin import ModelAdmin
-from atlas.core.schema import FieldSchema, FieldType, ModelSchema, Relation
+from telamon.core.model_admin import ModelAdmin
+from telamon.core.schema import FieldSchema, FieldType, ModelSchema, Relation
 
 from ..mongo.backend import Driver, MongoBackend, MongoRepository
 from ..mongo.common import Ref, _unwrap, field_from_annotation, parse_pk
@@ -102,14 +102,15 @@ class BeanieRepository(MongoRepository):
 
     @property
     def driver(self) -> Driver:
-        _ = self.coll  # resolving the collection also wires the driver from init_beanie()
+        _ = self.coll
         return self.backend.driver
 
     @property
     def coll(self) -> Any:
         if self._coll is None:
             doc = cast(type[Document], self.model)
-            self._coll = doc.get_pymongo_collection()  # raises if init_beanie() was not run
+            getter = getattr(doc, "get_pymongo_collection", None) or doc.get_motor_collection
+            self._coll = getter()
             self.backend.driver = Driver(self._coll.database)
         return self._coll
 
